@@ -1,0 +1,133 @@
+.imageCover {
+  position: relative;
+  width: 100%;
+  height: 92vh;
+}
+
+.imageBackground {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.mainImg {
+  width: 100%;
+  height: 100%;
+}
+
+.titleCover {
+  background-color: black;
+  height: 60px;
+  position: relative;
+}
+
+.titleCover:hover {
+  cursor: pointer;
+}
+
+.titleName {
+  position: absolute;
+  left: 15%;
+  font-family: 'Pacifico', cursive;
+  color: #e5474b;
+  font-size: 2.2rem;
+  text-align: initial;
+}
+
+.logo {
+  width: 100px;
+  height: 40px;
+}
+
+.sloganCover {
+  position: absolute;
+  top: 25%;
+  left: 24.7%;
+  transform: translate(-50%, -50%);
+}
+
+.sloganCover > span {
+  font-family: 'Pacifico', cursive;
+  color: #e5474b;
+  font-size: 36px;
+}
+
+.slogan {
+  display: inline;
+  font-family: 'Lato', sans-serif;
+  font-size: 36px;
+  color: white;
+}
+
+.SignBtn {
+  font-family: 'Lato', sans-serif;
+  position: absolute;
+  top: 45%;
+  left: 19.7%;
+  transform: translate(-50%, -50%);
+  border: 2px solid white;
+  outline: none;
+  font-size: 1rem;
+  padding: 10px 20px;
+  background-color: transparent;
+  color: white;
+  transition: background-color .2s linear;
+}
+
+.SignBtn:hover {
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.4);
+}
+
+.reviewerContainer {
+  padding: 60px 0;
+}
+
+.reviewerCover {
+  position: relative;
+  display: inline-block;
+  width: 250px;
+  min-height: 550px;
+  padding: 30px 20px 15px 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px 2px rgba(128, 128, 128, 0.4);
+  margin: 50px 20px;
+  vertical-align: top;
+}
+
+.reviewerCover > div {
+  text-align: initial;
+}
+
+.profileImg {
+  width: 180px;
+  height: 180px;
+  border-radius: 100%;
+}
+
+.reviewer.name {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 20px 0 10px 0;
+}
+
+.reviewer.description {
+  font-size: 0.9rem;
+  word-wrap: break-word;
+}
+
+.reviewer.stacks {
+  position: absolute;
+  top: 78%;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.reviewer.github {
+  position: absolute;
+  bottom: 20px;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+}
