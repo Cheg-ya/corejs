@@ -15,7 +15,7 @@ class SignIn extends Component {
   }
 
   handleLogin() {
-    this.props.githubLogin();
+    this.props.login();
   }
 
   render() {
