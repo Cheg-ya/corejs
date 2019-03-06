@@ -8,14 +8,19 @@ router.get('/', (req, res, next) => {
   });
 });
 
-router.get('/popular', (req, res, next) => {
-  Users.find().lean().sort({ comment_count: -1 }).limit(4).exec((err, users) => {
-    if (err) return res.sendStatus(500);
+router.get('/popular', async (req, res, next) => {
+  const { limit, sort } = req.query;
+  let reviewers;
 
-    if (!users.length) return res.json([]);
+  try {
+    reviewers = await Users.find().lean().sort({ comment_count: `${sort}` }).limit(parseInt(limit));
+  } catch(err) {
+    return next(new Error('Server Error'));
+  }
 
-    return res.json(users);
-  });
+  if (!reviewers.length) return res.json([]);
+
+  return res.json(reviewers);
 });
 
 module.exports = router;

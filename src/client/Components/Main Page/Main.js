@@ -19,7 +19,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/users/popular').then(({ data }) => {
+    axios.get('/api/users/popular?limit=4&sort=desc').then(({ data }) => {
       this.setState(prevState => {
         return {
           bestReviewer: prevState.bestReviewer.concat(data)
