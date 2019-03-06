@@ -1,17 +1,15 @@
 import { Route, Switch } from 'react-router-dom';
 import React, { Component } from 'react';
+import NoMatch from './Components/NoMatch/NoMatch';
+import Main from './Components/Main/Main';
 import './app.css';
-import Main from './Components/Main Page/Main';
 
 export default class App extends Component {
-  refreshPage() {
-    location.reload();
-  }
-
   render() {
     return (
       <Switch>
-        <Route exact path="/" render={props => <Main {...props} pageReloader={this.refreshPage}/>}/>
+        <Route exact path="/" component={Main}/>
+        <Route component={NoMatch} />
       </Switch>
     );
   }

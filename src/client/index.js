@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducer/reducer';
@@ -12,7 +12,7 @@ const store = createStore(reducer, applyMiddleware(logger));
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <Route render={props => <App {...props} />} />
+      <App />
     </Router>
   </Provider>,
   document.getElementById('root')

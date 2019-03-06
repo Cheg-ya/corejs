@@ -1,13 +1,4 @@
-.signInCover {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.signInForm {
+.loginForm {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -32,12 +23,12 @@
   top: 10px;
   color: red;
   font-size: 1.4rem;
-  opacity: 0.8;
+  opacity: 1;
 }
 
 .closeBtn:hover {
   cursor: pointer;
-  opacity: 1;
+  opacity: 0.6;
 }
 
 .githubBtn {
