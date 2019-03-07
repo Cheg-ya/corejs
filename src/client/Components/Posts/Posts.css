@@ -1,0 +1,156 @@
+.dump {
+  height: 60px;
+  background-color: #e9ebee;
+}
+
+.wrapper {
+  background-color: #e9ebee;
+}
+
+.newPostContainer {
+  position: relative;
+  top: 10px;
+  width: 400px;
+  margin: 0 auto;
+  text-align: initial;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+}
+
+.header {
+  border-bottom: 1px solid #dddfe2;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #f5f6f7;
+  font-weight: bold;
+  padding: 8px 10px;
+}
+
+.postInfoContainer {
+  height: 71px;
+  display: flex;
+  background-color: white;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.postInfoContainer > .profileCover {
+  vertical-align: middle;
+  margin: 8px 0 0 8px;
+  width: 50px;
+  height: 50px;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.postInfoContainer > .message {
+  width: 348px;
+  vertical-align: middle;
+  padding: 20px 12px 14px 12px;
+  font-size: 1.1rem;
+}
+
+.postsWrapper {
+  padding: 20px 0;
+}
+
+.postsWrapper > .publicPostContainer {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+  background-color: white;
+}
+
+.publicPostContainer > .publicPostCover {
+  padding: 12px 12px 0 12px;
+}
+
+.postBy {
+  display: flex;
+}
+
+.postBy > .authorProfileCover {
+  vertical-align: middle;
+  margin: 8px 0 0 8px;
+  width: 50px;
+  height: 50px;
+}
+
+.authorProfileImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.author {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.created_at {
+  color: gray;
+}
+
+.postBy > .postDateInfo {
+  text-align: initial;
+  width: 348px;
+  vertical-align: middle;
+  padding: 8px 12px 14px 12px;
+}
+
+.postTitle {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin: 0;
+  padding-top: 5px;
+}
+
+.postDescription {
+  text-align: initial;
+  padding: 0 8px;
+}
+
+.postReviewInfo {
+  margin: 0 18px;
+  padding: 4px 0 12px 0;
+  text-align: initial;
+}
+
+.reviewerState {
+  padding: 0 10px 8px 10px;
+  text-align: initial;
+  font-size: 0.8rem;
+}
+
+.stackTags {
+  border-top: 1px solid rgba(128, 128, 128, 0.4);
+  font-weight: bold;
+  padding: 5px 4px 0 4px;
+  font-size: 0.9rem;
+}
+
+.reviewStartBtn {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  width: 100%;
+  height: 2rem;
+  outline: none;
+  border: none;
+  color: white;
+  background-color: #e5474b;
+  cursor: pointer;
+  opacity: 0.8;
+  font-weight: 700;
+}
+
+.reviewStartBtn:hover {
+  opacity: 1;
+}
