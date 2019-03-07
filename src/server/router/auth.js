@@ -58,4 +58,21 @@ router.post('/github', async (req, res, next) => {
   }
 });
 
+router.post('/check', async (req, res, next) => {
+  const { token } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, secretObj.secret);
+    const { github_Id, email } = decoded;
+    const user = await User.findOne({ github_Id, email }).lean();
+
+    if (user) {
+      return res.json({ message: 'valid' });
+    }
+
+  } catch(err) {
+    return next(new Error('Invalid Token!'));
+  }
+});
+
 module.exports = router;

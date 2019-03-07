@@ -1,4 +1,4 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS } from '../actionType/actionType';
 
 export const fetchBestReviewers = action => {
   const { name, profile_image, github, description, stacks } = action;
@@ -11,4 +11,12 @@ export const fetchBestReviewers = action => {
     description,
     stacks
   };
-}
+};
+
+export const fetchPublicPosts = action => {
+  const { } = action;
+
+  return {
+    type: PUBLIC_POST_REQUEST_SUCCESS
+  };
+};

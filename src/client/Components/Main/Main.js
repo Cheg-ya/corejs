@@ -1,11 +1,12 @@
 import { fetchBestReviewers } from '../../action/action';
 import React, { Component } from 'react';
 import Modal from '../Modals/Modal';
+import Login from '../Login/Login';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import axios from 'axios';
+import config from '../../../config/firebase';
 import './Main.css';
-import Login from '../Login/Login';
 
 class Main extends Component {
   constructor(props) {
@@ -22,7 +23,12 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    const { reviewers, onMainPageMount } = this.props;
+    const { reviewers, onMainPageMount, history } = this.props;
+    const loggedIn = localStorage.getItem('token');
+
+    if (loggedIn) {
+      return history.push('/posts');
+    }
 
     if (!reviewers.length) {
       onMainPageMount()
@@ -58,17 +64,11 @@ class Main extends Component {
   }
 
   githubLogin() {
-    const config = {
-      apiKey: "AIzaSyBM2SLOqhZfnsyF-gzZIPKB3oYPHyh7ouQ",
-      authDomain: "corejs-b1881.firebaseapp.com"
-    };
-
     firebase.initializeApp(config);
 
     const provider = new firebase.auth.GithubAuthProvider();
 
     firebase.auth().signInWithPopup(provider).then(result => {
-      // const token = result.credential.accessToken;
       const { email } = result.user;
       const { username } = result.additionalUserInfo;
       const { avatar_url, html_url, id} = result.additionalUserInfo.profile;
@@ -112,8 +112,8 @@ class Main extends Component {
 
     return (
       <div className="mainContainer">
-        <div className="titleCover" onClick={this.pageRefresher}>
-          <div className="titleName">Core</div>
+        <div className="titleCover">
+          <div className="titleName" onClick={this.pageRefresher}>Core</div>
         </div>
         <div className="imageCover">
           <div className="imageBackground"></div>
