@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Users = require('../models/Users');
+const User = require('../models/User');
+const Stack = require('../models/Stack');
 
 router.get('/', (req, res, next) => {
-  Users.find().lean().exec((err, users) => {
+  User.find().lean().exec((err, users) => {
     return res.json(users);
   });
 });
@@ -11,16 +12,17 @@ router.get('/', (req, res, next) => {
 router.get('/popular', async (req, res, next) => {
   const { limit, sort } = req.query;
   let reviewers;
-
+  
   try {
-    reviewers = await Users.find().lean().sort({ comment_count: `${sort}` }).limit(parseInt(limit));
+    reviewers = await User.find().populate('stacks')
+    .sort({ comments_count: `${sort}` }).limit(parseInt(limit)).lean();
+
+    if (!reviewers.length) return res.json([]);
+
+    return res.json(reviewers);
   } catch(err) {
-    return next(new Error('Server Error'));
+    return next(new Error('Server Error: /users/popular'));
   }
-
-  if (!reviewers.length) return res.json([]);
-
-  return res.json(reviewers);
 });
 
 module.exports = router;

@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const users = require('./router/users.js');
+const users = require('./router/users');
 const auth = require('./router/auth');
+const posts = require('./router/posts');
 
 mongoose.connect('mongodb://admin_song:123123123@cluster0-shard-00-00-4hrjv.mongodb.net:27017,cluster0-shard-00-01-4hrjv.mongodb.net:27017,cluster0-shard-00-02-4hrjv.mongodb.net:27017/CORE?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true',
   { useNewUrlParser: true }
@@ -22,6 +23,7 @@ app.use(express.static('dist'));
 app.use(express.json());
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+app.use('/api/posts', posts);
 
 app.use(function(req, res, next) {
   const err = new Error('Not Found');

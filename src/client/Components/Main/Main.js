@@ -1,11 +1,13 @@
 import { fetchBestReviewers } from '../../action/action';
+import config from '../../../config/firebase';
+import { immutable, getTagsName, getUserById } from '../utils/utils';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Modal from '../Modals/Modal';
 import Login from '../Login/Login';
-import { connect } from 'react-redux';
 import firebase from 'firebase';
 import axios from 'axios';
-import config from '../../../config/firebase';
+import _ from 'lodash';
 import './Main.css';
 
 class Main extends Component {
@@ -46,7 +48,7 @@ class Main extends Component {
           <div>
             <p className="reviewer description">{description}</p>
           </div>
-          <div className="reviewer stacks">{stacks.join(' ')}</div>
+          <div className="reviewer stacks">{stacks.map(({ name }) => name).join(' ')}</div>
           <a className="gitLink" href={github} target="_blank" title="Click to Github">
             <img className="reviewer github" src="./public/octocat.png" />
           </a>
@@ -78,7 +80,7 @@ class Main extends Component {
         username,
         avatar_url,
         html_url,
-        github_Id: id
+        github_id: id
       }).then(result => {
         const { message, token } = result.data;
 
@@ -88,7 +90,10 @@ class Main extends Component {
           return this.props.history.push('/posts');
         }
 
-      }).catch(err => alert(err.message));
+      }).catch(err => {
+        const { message } = response.data;
+        return alert(message);
+      });
 
     }).catch(error => {
       var errorCode = error.code;
@@ -138,11 +143,21 @@ class Main extends Component {
   }
 }
 
-const mapState = (state, ownProps) => {
-  const { reviewers } = state;
+const getReviewersData = state => {
+  const { reviewers, stackTags, users } = state;
+
+  if (!reviewers.length) {
+    return {
+      reviewers: []
+    };
+  }
+
+  const popularUsers = getUserById(reviewers, users);
+  const reviewersInfo = _.values(immutable(popularUsers));
+  const result = getTagsName(reviewersInfo, stackTags);
 
   return {
-    reviewers
+    reviewers: _.values(result)
   };
 };
 
@@ -158,4 +173,4 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(mapState, mapDispatch)(Main);
+export default connect(getReviewersData, mapDispatch)(Main);

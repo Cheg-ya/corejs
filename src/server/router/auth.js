@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/Users');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const secretObj = require('../../config/jwt');
 
@@ -19,10 +19,10 @@ const createToken = loginData => {
 }
 
 router.post('/github', async (req, res, next) => {
-  const { github_Id, avatar_url, html_url, email, username } = req.body;
+  const { github_id, avatar_url, html_url, email, username } = req.body;
 
   try {
-    const existUser = await User.findOne({ github_Id }).lean();  
+    const existUser = await User.findOne({ github_id }).lean();  
 
     if (existUser) {
       const token = createToken(existUser);
@@ -31,15 +31,11 @@ router.post('/github', async (req, res, next) => {
 
     } else if (existUser === null) {
       const user = new User({
-        github_Id,
+        github_id,
         name: username,
         email,
         profile_image: avatar_url,
-        github: html_url,
-        stacks: [],
-        description: '',
-        comment_count: 0,
-        created_at: new Date()
+        github_url: html_url
       });
 
       try {
