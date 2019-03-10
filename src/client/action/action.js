@@ -1,4 +1,4 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
 
 const organizeData = dataChunk => {
   const container = {};
@@ -38,5 +38,19 @@ export const fetchPublicPosts = action => {
     stacks: organizeData(stacks),
     reviewers: organizeData(reviewers),
     postedBy: organizeData([postedBy])
+  };
+};
+
+export const storeLoginUser = action => {
+  const { name, profile_image, github_url, description, stacks, _id } = action;
+
+  return {
+    type: LOGIN_SUCCESS,
+    id: _id,
+    name,
+    profile_image,
+    github_url,
+    description,
+    stacks: organizeData(stacks)
   };
 };

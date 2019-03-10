@@ -1,4 +1,4 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
 import { immutable } from '../Components/utils/utils';
 import _ from 'lodash';
 
@@ -6,7 +6,8 @@ const initialState = {
   reviewers: [],
   posts: {},
   users: {},
-  stackTags: {}
+  stackTags: {},
+  loginUser: ''
 };
 
 const addNewTags = (origin, tags) => {
@@ -19,66 +20,90 @@ const addNewTags = (origin, tags) => {
     }
   });
 
-  return {
-    ...origin,
-    ...newTags
-  };
+  return addNewData(origin, newTags);
 };
 
-const addNewUser = (origin, target) => {
+const addNewData = (origin, target) => {
   return {
     ...origin,
     ...target
   };
 };
 
-const reducer = (state = initialState, action) => {
-  switch(action.type) {
+const getUserFormat = action => {
+  const { id, name, stacks, profile_image, github_url, description } = action;
+  return {
+    [id]: {
+      id,
+      name,
+      profile_image,
+      github_url,
+      description,
+      stacks: _.keys(stacks)
+    }
+  };
+};
+
+const getPostFormat = action => {
+  const { id, title, description, created_at, stacks, postedBy, reviewers } = action;
+
+  return {
+    [id]: {
+      id,
+      postedBy: _.keys(postedBy)[0],
+      title,
+      description,
+      created_at,
+      reviewers: _.keys(reviewers),
+      stacks: _.keys(stacks)
+    }
+  };
+};
+
+const reducer = (state = initialState, action) => { //user, post는 배열 데이터 정보를 모두 가지고 있으므로 리듀서에서 따로 처리 해야함
+  switch(action.type) {                             //하위 정보는 참조값 배열을 이미 가지고 있으므로 바로 저장
     case BEST_REVIEWER_REQUEST_SUCCESS :
       if (action.type === BEST_REVIEWER_REQUEST_SUCCESS) {
-        const { id, name, stacks, profile_image, github_url, description } = action;
+        const { id, stacks } = action;
 
-        const user = {
-          [id]: {
-            id,
-            name,
-            profile_image,
-            github_url,
-            description,
-            stacks: _.keys(stacks)
-          }
-        };
+        const user = getUserFormat(action);
 
         return {
           ...state,
           reviewers: state.reviewers.concat(id),
-          users: addNewUser(state.users, user),
+          users: addNewData(state.users, user),
           stackTags: addNewTags(state.stackTags, stacks)
         };
       }
 
     case PUBLIC_POST_REQUEST_SUCCESS :
       if (action.type === PUBLIC_POST_REQUEST_SUCCESS) {
-        const { id, title, description, created_at, stacks, postedBy, reviewers } = action;
+        const { stacks, postedBy, reviewers } = action;
+
+        const post = getPostFormat(action);
 
         return {
           ...state,
-          posts: {
-            ...state.posts,
-            [id]: {
-              id,
-              postedBy: _.keys(postedBy)[0],
-              title,
-              description,
-              created_at,
-              reviewers: _.keys(reviewers),
-              stacks: _.keys(stacks)
-            }
-          },
-          users: addNewUser(state.users, _.assign({}, postedBy, reviewers)),
+          posts: addNewData(state.posts, _.assign({}, post)),
+          users: addNewData(state.users, _.assign({}, postedBy, reviewers)),
           stackTags: addNewTags(state.stackTags, stacks)
         };
       }
+
+    case LOGIN_SUCCESS :
+      if (action.type === LOGIN_SUCCESS) {
+        const { id, stacks } = action;
+
+        const user = getUserFormat(action);
+
+        return {
+          ...state,
+          users: addNewData(state.users, user),
+          stackTags: addNewTags(state.stackTags, stacks),
+          loginUser: id
+        };
+      }
+
     default :
       return state;
   }

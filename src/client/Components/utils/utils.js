@@ -75,3 +75,19 @@ export const getReviewerInfo = (target, userList) => {
 
   return target;
 };
+
+export const countReviewers = reviewers => {
+  switch (reviewers.length) {
+    case 2:
+      return `${reviewers[0].name} & ${reviewers[1].name} reviewing`;
+    case 1:
+      return `${reviewers[0].name} reviewing`;
+    default :
+      return `${reviewers[0].name} & ${reviewers.length - 1} others reviewing`;
+  }
+};
+
+export const convertDateType = targetDate => {
+  const date = new Date(targetDate).toString().split(' ');
+  return `${date[2]} ${date[1]} ${date[3]}`;
+};

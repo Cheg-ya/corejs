@@ -1,10 +1,9 @@
-import { immutable, getTagsName, getAuthorInfo, getReviewerInfo } from '../utils/utils';
-import { fetchPublicPosts } from '../../action/action';
+import { countReviewers, convertDateType } from '../utils/utils';
 import React, { Component, Fragment } from 'react';
+import PostsContainer from '../Containers/PostsContainer';
 import Spinner from '../Spinner/Spinner';
-import { connect } from 'react-redux';
 import Header from '../Header/Header';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import './Posts.css';
 
 class Posts extends Component {
@@ -17,17 +16,32 @@ class Posts extends Component {
     this.displayPosts = this.displayPosts.bind(this);
   }
 
-  componentDidMount() {
-    const { posts, onPostsComponentMount } = this.props;
-    const boundFetchFunc = onPostsComponentMount.bind(this);
+  componentWillReceiveProps(nextProps) {
+    const { fetchOnProgress } = this.state;
+    const prevParams = this.props.match.params;
+    const nextParams = nextProps.match.params;
 
-    if (!posts.length) {
-      this.setState(prevState => {
-        return {
+    if (!_.isEqual(prevParams, nextParams) && !fetchOnProgress) {
+      const { onPostsComponentMount } = this.props;
+      const boundFetchFunc = onPostsComponentMount.bind(this);
+
+      return this.setState(prevState => {
+        return {          
           fetchOnProgress: !prevState.fetchOnProgress
         };
       }, boundFetchFunc);
     }
+  }
+
+  componentDidMount() {
+    const { onPostsComponentMount } = this.props;
+    const boundFetchFunc = onPostsComponentMount.bind(this);
+
+    this.setState(prevState => {
+      return {
+        fetchOnProgress: !prevState.fetchOnProgress
+      };
+    }, boundFetchFunc);
   }
 
   displayPosts() {
@@ -98,68 +112,4 @@ class Posts extends Component {
   }
 }
 
-const countReviewers = reviewers => {
-  switch (reviewers.length) {
-    case 2:
-      return `${reviewers[0].name} & ${reviewers[1].name} reviewing`;
-    case 1:
-      return `${reviewers[0].name} reviewing`;
-    default :
-      return `${reviewers[0].name} & ${reviewers.length - 1} others reviewing`;
-  }
-};
-
-const convertDateType = targetDate => {
-  const date = new Date(targetDate).toString().split(' ');
-  return `${date[2]} ${date[1]} ${date[3]}`;
-};
-
-const mapState = state => {
-  const { posts, users, stackTags } = state;
-  const postsInfo = _.values(immutable(posts));
-
-  if (!_.values(posts).length) {
-    return {
-      posts: []
-    };
-  }
-
-  const tagResult = getTagsName(postsInfo, stackTags);
-  const authorResult = getAuthorInfo(tagResult, users);
-  const reviewerResult = getReviewerInfo(authorResult, users);
-
-  return {
-    posts: reviewerResult
-  };
-};
-
-const mapDispatch = dispatch => {
-  return {
-    onPostsComponentMount(amount) {
-      const limit = amount || 10;
-      const that = this;
-
-      axios.get(`/api/posts?limit=${limit}&sort=desc`).then(({ data }) => {
-        data.forEach(post => {
-          dispatch(fetchPublicPosts(post));
-        });
-
-        that.setState(prevState => {
-          return {
-            fetchOnProgress: !prevState.fetchOnProgress
-          };
-        });
-      }).catch(err => {
-        alert(err.message);
-
-        that.setState(prevState => {
-          return {
-            fetchOnProgress: !prevState.fetchOnProgress
-          };
-        });
-      });
-    }
-  }
-};
-
-export default connect(mapState, mapDispatch)(Posts);
+export default PostsContainer(Posts);

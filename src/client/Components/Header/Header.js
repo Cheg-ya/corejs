@@ -1,9 +1,11 @@
+import { storeLoginUser } from '../../action/action';
 import { Link, Redirect } from 'react-router-dom';
-import React, { Component } from 'react';
-import firebase from 'firebase';
-import './Header.css';
 import config from '../../../config/firebase';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import firebase from 'firebase';
 import axios from 'axios';
+import './Header.css';
 
 class Header extends Component {
   constructor(props) {
@@ -17,27 +19,11 @@ class Header extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  async componentDidMount() {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      try {
-        const result = await axios.post('/api/auth/check', { token });
-  
-        if (result.data.message === 'valid') {
-          if (!firebase.apps.length) {
-            firebase.initializeApp(config);
-          }
-        }
-  
-      } catch({ response }) {
-        const { message } = response.data;
-  
-        localStorage.removeItem('token');
-        window.location = '/';
-        
-        return alert(message);
-      }
+  componentDidMount() {
+    const { getLoginUserId, loginUser } = this.props;
+    
+    if (!loginUser.length) {
+      getLoginUserId();
     }
   }
 
@@ -84,11 +70,11 @@ class Header extends Component {
           <nav className="options">
             <Link className="homeBtn" to="/posts">Home</Link>
             <button className="requestBtn" onClick={this.toggleModal}>Request</button>
-            <Link className="reviewBtn" to="/reviews">My Review</Link>
+            <Link className="reviewBtn" to="/user/reviews">My Review</Link>
             <div className="dropDown">
               <button className="dropBtn">Settings</button>
               <div className="dropBox">
-                <Link className="accountBtn" to="/account">Account</Link>
+                <Link className="accountBtn" to="/user/account">Account</Link>
                 <button className="logoutBtn" onClick={this.clickToLogout}>Logout</button>
               </div>
             </div>
@@ -99,4 +85,43 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    loginUser: state.loginUser
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    async getLoginUserId() {
+      const token = localStorage.getItem('token');
+
+      if (token) {
+        try {
+          const result = await axios.post('/api/auth/check', { token });
+          const { message, user} = result.data;
+
+          if (message === 'valid') {
+            if (!firebase.apps.length) {
+              firebase.initializeApp(config);
+            }
+
+            dispatch(storeLoginUser(user));
+            return true;
+          }
+    
+        } catch({ response }) {
+          const { message } = response.data;
+    
+          localStorage.removeItem('token');
+
+          alert(message);
+
+          return window.location = '/';
+        }
+      }
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

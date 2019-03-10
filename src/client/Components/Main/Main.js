@@ -1,13 +1,9 @@
-import { fetchBestReviewers } from '../../action/action';
+import MainContainer from '../Containers/MainContainer';
 import config from '../../../config/firebase';
-import { immutable, getTagsName, getUserById } from '../utils/utils';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Modal from '../Modals/Modal';
 import Login from '../Login/Login';
 import firebase from 'firebase';
-import axios from 'axios';
-import _ from 'lodash';
 import './Main.css';
 
 class Main extends Component {
@@ -74,34 +70,21 @@ class Main extends Component {
       const { email } = result.user;
       const { username } = result.additionalUserInfo;
       const { avatar_url, html_url, id} = result.additionalUserInfo.profile;
-
-      axios.post('/api/auth/github', {
+      const header = {
         email,
         username,
         avatar_url,
         html_url,
         github_id: id
-      }).then(result => {
-        const { message, token } = result.data;
-
-        if (message === 'success') {
-          localStorage.setItem('token', token);
-
-          return this.props.history.push('/posts');
-        }
-
-      }).catch(err => {
-        const { message } = response.data;
-        return alert(message);
-      });
+      };
+  
+      this.props.storeUserInfo.call(this, header);
 
     }).catch(error => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.email;
+      const credential = error.credential;
       
       return alert(errorMessage);
     });
@@ -143,34 +126,4 @@ class Main extends Component {
   }
 }
 
-const getReviewersData = state => {
-  const { reviewers, stackTags, users } = state;
-
-  if (!reviewers.length) {
-    return {
-      reviewers: []
-    };
-  }
-
-  const popularUsers = getUserById(reviewers, users);
-  const reviewersInfo = _.values(immutable(popularUsers));
-  const result = getTagsName(reviewersInfo, stackTags);
-
-  return {
-    reviewers: _.values(result)
-  };
-};
-
-const mapDispatch = dispatch => {
-  return {
-    onMainPageMount() {
-      axios.get('/api/users/popular?limit=4&sort=desc').then(({ data }) => {
-        data.forEach(reviewer => {
-          dispatch(fetchBestReviewers(reviewer));
-        });
-      }).catch(err => alert(err.message));
-    }
-  };
-};
-
-export default connect(getReviewersData, mapDispatch)(Main);
+export default MainContainer(Main);

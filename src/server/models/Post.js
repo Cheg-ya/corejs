@@ -50,7 +50,7 @@ const PostSchema = new Schema({
       default: []
     }
   ]
-},{
+}, {
   timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
