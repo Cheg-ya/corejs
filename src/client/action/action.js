@@ -1,8 +1,7 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
 
 const organizeData = dataChunk => {
   const container = {};
-
   dataChunk.forEach(data => {
     const { _id } = data;
     delete data._id;
@@ -26,11 +25,11 @@ export const fetchBestReviewers = action => {
   };
 };
 
-export const fetchPublicPosts = action => {
+export const fetchPosts = action => {
   const { _id, title, description, created_at, stacks, reviewers, postedBy } = action;
 
   return {
-    type: PUBLIC_POST_REQUEST_SUCCESS,
+    type: POST_REQUEST_SUCCESS,
     id: _id,
     title,
     description,

@@ -26,7 +26,7 @@ const PostSchema = new Schema({
   },
   code: [
     {
-      type: ObjectId,
+      type: Object,
       default: []
     }
   ],

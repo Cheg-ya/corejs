@@ -19,14 +19,6 @@ class Header extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  componentDidMount() {
-    const { getLoginUserId, loginUser } = this.props;
-    
-    if (!loginUser.length) {
-      getLoginUserId();
-    }
-  }
-
   handleOnSubmit(e) {
     e.preventDefault();
     //ajax from props
@@ -46,19 +38,21 @@ class Header extends Component {
     location.reload();
   }
 
-  clickToLogout() {
-    firebase.auth().signOut().then(function() {
-      localStorage.removeItem('token');
-      window.location = '/';
+  async clickToLogout() {
+    try {
+      const result = await firebase.auth().signOut().then(() => true);
 
-    }).catch(err => alert(err.message));
+      if (result) {
+        localStorage.removeItem('token');
+        return window.location = '/';
+      }
+
+    } catch(err) {
+      alert(err.message);
+    }
   }
 
   render() {
-    if (!localStorage.token) {
-      return (<Redirect to="/" />);
-    }
-
     return (
       <header className="barContainer">
         <div className="inner">
@@ -85,43 +79,4 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    loginUser: state.loginUser
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    async getLoginUserId() {
-      const token = localStorage.getItem('token');
-
-      if (token) {
-        try {
-          const result = await axios.post('/api/auth/check', { token });
-          const { message, user} = result.data;
-
-          if (message === 'valid') {
-            if (!firebase.apps.length) {
-              firebase.initializeApp(config);
-            }
-
-            dispatch(storeLoginUser(user));
-            return true;
-          }
-    
-        } catch({ response }) {
-          const { message } = response.data;
-    
-          localStorage.removeItem('token');
-
-          alert(message);
-
-          return window.location = '/';
-        }
-      }
-    }
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

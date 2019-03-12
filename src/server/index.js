@@ -19,8 +19,7 @@ db.on('error', err => {
 
 const app = express();
 
-app.use(express.static('dist'));
-app.use(express.json());
+require('./middleWares/index')(app);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/posts', posts);

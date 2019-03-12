@@ -1,4 +1,4 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS, PUBLIC_POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
 import { immutable } from '../Components/utils/utils';
 import _ from 'lodash';
 
@@ -76,8 +76,8 @@ const reducer = (state = initialState, action) => { //user, post는 배열 데�
         };
       }
 
-    case PUBLIC_POST_REQUEST_SUCCESS :
-      if (action.type === PUBLIC_POST_REQUEST_SUCCESS) {
+    case POST_REQUEST_SUCCESS :
+      if (action.type === POST_REQUEST_SUCCESS) {
         const { stacks, postedBy, reviewers } = action;
 
         const post = getPostFormat(action);

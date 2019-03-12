@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const UserSchema = new Schema({
-  _id: ObjectId,
   github_id: {
     type: Number,
     required: true

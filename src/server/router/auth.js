@@ -5,18 +5,18 @@ const jwt = require('jsonwebtoken');
 const secretObj = require('../../config/jwt');
 
 const createToken = loginData => {
-  const { github_id, email, username } = loginData;
+  const { email } = loginData;
+  const userId = loginData._id.toString();
 
   return jwt.sign({
-    github_id,
-    email,
-    name: username
+    id: userId,
+    email
   },
   secretObj.secret, {
     algorithm: 'HS256',
-    expiresIn: '7d'
+    expiresIn: '3h'
   });
-}
+};
 
 router.post('/github', async (req, res, next) => {
   const { github_id, avatar_url, html_url, email, username } = req.body;
@@ -28,7 +28,7 @@ router.post('/github', async (req, res, next) => {
       const token = createToken(existUser);
 
       return res.json({ message: 'success', token, user: existUser });
-
+      
     } else if (existUser === null) {
       const user = new User({
         github_id,
@@ -59,8 +59,8 @@ router.post('/check', async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secretObj.secret);
-    const { github_id, email } = decoded;
-    const user = await User.findOne({ github_id, email }).lean();
+    const { email, id } = decoded;
+    const user = await User.findOne({ email, _id: id }).lean();
 
     if (user) {
       return res.json({ message: 'valid', user });

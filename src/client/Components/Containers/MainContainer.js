@@ -24,29 +24,49 @@ const getReviewersData = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onMainPageMount() {
-      axios.get('/api/users/popular?limit=4&sort=desc').then(({ data }) => {
-        data.forEach(reviewer => {
+    async onMainPageMount() {
+      try {
+        const result = await axios.get('/api/users/popular?limit=4&sort=desc');
+
+        result.data.forEach(reviewer => {
           dispatch(fetchBestReviewers(reviewer));
         });
-      }).catch(err => alert(err.message));
+
+      } catch(err) {
+        const serverError = err.response;
+
+        if (serverError) {
+          const serverErrMsg = serverError.data.message;
+          return alert(serverErrMsg)
+        }
+
+        alert(err.message);
+      }
     },
-    storeUserInfo(header) {
-      axios.post('/api/auth/github', header).then(result => {
+    async storeUserInfo(header) {
+      try {
+        const result = await axios.post('/api/auth/github', header);
+
         const { message, token, user } = result.data;
 
         if (message === 'success') {
           localStorage.setItem('token', token);
+
           dispatch(storeLoginUser(user));
 
           return this.props.history.push('/posts');
         }
 
-      }).catch(err => { // check where response comes from
-        // const { message } = err.response.data;
-        debugger;
+      } catch (err) {
+        const serverError = err.response;
+        
+        if (serverError) {
+          const serverErrMsg = serverError.data.message;
+          return alert(serverErrMsg);
+        }
+
         return alert(err.message);
-      });
+      }
     }
   };
 };

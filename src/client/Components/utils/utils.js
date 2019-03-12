@@ -55,7 +55,7 @@ export const getAuthorInfo = (target, userList) => {
 
 export const getReviewerInfo = (target, userList) => {
   let containerWithIds = [];
-  
+
   target.forEach(({ reviewers }) => {
     containerWithIds = containerWithIds.concat(reviewers);
   });
@@ -77,6 +77,10 @@ export const getReviewerInfo = (target, userList) => {
 };
 
 export const countReviewers = reviewers => {
+  if (!reviewers.length) {
+    return '';
+  }
+
   switch (reviewers.length) {
     case 2:
       return `${reviewers[0].name} & ${reviewers[1].name} reviewing`;

@@ -117,10 +117,10 @@ class Main extends Component {
             {reviewers.length > 0 && this.displayReviewers(reviewers)}
           </div>
         </div>
-        {displayLoginModal && 
-          <Modal closeModal={this.toggleSignInModal}>
-            <Login login={this.githubLogin} />
-          </Modal>}
+        {displayLoginModal &&
+        (<Modal closeModal={this.toggleSignInModal}>
+          <Login login={this.githubLogin} />
+        </Modal>)}
       </div>
     );
   }

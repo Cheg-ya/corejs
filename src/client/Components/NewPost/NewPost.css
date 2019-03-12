@@ -1,0 +1,297 @@
+.formWrapper {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: fadeIn .5s;
+}
+
+.firstFormContainer {
+  width: 400px;
+  margin: 0 auto;
+  text-align: initial;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+}
+
+.formHeader {
+  border-bottom: 1px solid #dddfe2;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #f5f6f7;
+  font-weight: bold;
+  padding: 8px 10px;
+}
+
+.profileWrapper {
+  height: 71px;
+  display: flex;
+}
+
+.profileWrapper > .profileCover, .stackImageCover {
+  vertical-align: middle;
+  margin: 8px 0 0 8px;
+  width: 50px;
+  height: 50px;
+}
+
+.profileImage, .stackImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.profileWrapper > .titleInputCover, .stackInputCover {
+  width: 348px;
+  vertical-align: middle;
+  padding: 16px 12px 14px 12px;
+  font-size: 1.1rem;
+}
+
+.titleInput, .stackInput {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #dddfe2;
+  font-size: 1.1rem;
+  padding: 5px;
+  font-family: 'Lato', sans-serif;
+}
+
+.postContents {
+  width: inherit;
+  padding: 10px 12px 0 12px;
+}
+
+.postContents > div:first-of-type {
+  padding-left: 12px;
+}
+
+.descriptionCover {
+  display: block;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.descriptionInput {
+  display: block;
+  width: 94%;
+  height: 100px;
+  outline: none;
+  padding: 10px;
+  margin: 10px auto 0 auto;
+  border-radius: 6px;
+  border: 1px solid #dddfe2;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+}
+
+.publicStateCover {
+  padding: 10px 0;
+  padding-left: 10px;
+}
+
+.publicStateInput {
+  display: inline-block;
+  position: relative;
+  top: -2px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  outline: none;
+}
+
+.nextBtnCover {
+  width: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.nextBtnCover > .nextBtn {
+  outline: none;
+  border: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  background-color: #e5474b;
+  opacity: 0.8;
+  color: white;
+  width: 100%;
+  height: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nextBtn:hover {
+  opacity: 1;
+}
+
+.stackList {
+  padding: 5px 6px 12px 6px;
+}
+
+.stackInputField {
+  height: 71px;
+  display: flex;
+}
+
+.stackInputField > .stackImageCover {
+  vertical-align: middle;
+  margin: 8px 0 0 8px;
+  width: 50px;
+  height: 50px;
+}
+
+.stackImageCover > .stackImage {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #dddfe2;
+  border-radius: 100%;
+}
+
+.stackList > .stackBtn {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color:#e8f5fa;
+  color: #2669ab;
+  margin: 0 2px;
+  cursor: pointer;
+}
+
+.btnCover {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.btnCover > button {
+  outline: none;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #e5474b;
+  opacity: 0.8;
+  color: white;
+  height: 2rem;
+  width: 50%;
+}
+
+.btnCover > button:hover {
+  opacity: 1;
+}
+
+.btnCover > .prevBtn {
+  border-bottom-left-radius: 10px;
+}
+
+.btnCover > .submitBtn {
+  border-bottom-right-radius: 10px;
+  outline: none;
+  border: none;
+  background-color: #61e547;
+  opacity: 0.8;
+  color: white;
+  width: 100%;
+  height: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 50%;
+}
+
+.secondFormContainer {
+  position: relative;
+  width: 1000px;
+  text-align: initial;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+  animation: fadeIn .4s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  
+  to {
+    opacity: 1;
+  }
+}
+
+.codeWrapper {
+  display: inline-block;
+  max-height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.codeEditorContainer {
+  width: 950px;
+  margin: 0 auto;
+}
+
+.editorHeader {
+  position: relative;
+  border-bottom: 1px solid #dddfe2;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  background-color: #f5f6f7;
+  font-weight: bold;
+  padding: 8px 10px;
+}
+
+.codeTitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #dddfe2;
+  background-color: #f5f6f7;
+  padding: 1px 0 1px 5px;
+}
+
+.editorList {
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+}
+
+.addEditorBtn {
+  position: absolute;
+  right: 40px;
+  top: 10px;
+  color: #61e547;
+  font-size: 1.4rem;
+  opacity: 0.6;
+  cursor: pointer;
+  background-color: white;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 100%;
+}
+
+.addEditorBtn:hover {
+  opacity: 1;
+}
+
+.removeEditorBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: red;
+  font-size: 1.4rem;
+  opacity: 0.6;
+  cursor: pointer;
+  background-color: white;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 100%;
+}
+
+.removeEditorBtn:hover {
+  opacity: 1;
+}

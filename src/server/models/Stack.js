@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const stackSchema = new Schema({
-  _id: ObjectId,
   name: {
     type: String,
     required: true

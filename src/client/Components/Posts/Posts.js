@@ -1,8 +1,10 @@
-import { countReviewers, convertDateType } from '../utils/utils';
+import { countReviewers } from '../utils/utils';
 import React, { Component, Fragment } from 'react';
 import PostsContainer from '../Containers/PostsContainer';
 import Spinner from '../Spinner/Spinner';
 import Header from '../Header/Header';
+import Modal from '../Modals/Modal';
+import NewPost from '../NewPost/NewPost';
 import PropTypes from 'prop-types';
 import './Posts.css';
 
@@ -10,10 +12,13 @@ class Posts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fetchOnProgress: false
+      fetchOnProgress: false,
+      displayModal: false
     };
-
+    
+    this.toggleModal = this.toggleModal.bind(this);
     this.displayPosts = this.displayPosts.bind(this);
+    this.handleNewPostSubmit = this.handleNewPostSubmit.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,14 +49,23 @@ class Posts extends Component {
     }, boundFetchFunc);
   }
 
+  handleNewPostSubmit(data) {
+    const { createNewPost } = this.props;
+    const boundFetchFunc = createNewPost.bind(this, data);
+
+    this.setState(prevState => {
+      return {
+        fetchOnProgress: !prevState.fetchOnProgress
+      };
+    }, boundFetchFunc);
+  }
+
   displayPosts() {
     const { posts } = this.props;
 
     return posts.map((post, i) => {
       const { postedBy, created_at, title, description, reviewers, stacks } = post;
-
-      const postedDate = convertDateType(created_at);
-      const participants = countReviewers(reviewers);
+     const participants = countReviewers(reviewers);
 
       return (
         <div className="publicPostContainer" key={i}>
@@ -62,7 +76,7 @@ class Posts extends Component {
               </div>
               <div className="postDateInfo">
                 <div className="author">{postedBy.name}</div>
-                <div className="created_at">{postedDate}</div>
+                <div className="created_at">{created_at}</div>
               </div>
             </div>
             <div className="postTitle">{title}</div>
@@ -80,23 +94,36 @@ class Posts extends Component {
     });
   }
 
+  toggleModal() {
+    this.setState(prevState => {
+      return {
+        displayModal: !prevState.displayModal
+      };
+    });
+  }
+
   render() {
-    const { posts } = this.props;
-    const { fetchOnProgress } = this.state;
+    const { posts, loginUser } = this.props;
+    const { fetchOnProgress, displayModal } = this.state;
+    const profileUrl = loginUser ? loginUser.profile_image : './public/user_default.jpg';
 
     return (
       <Fragment>
         <Header history={this.props.history} />
         <Spinner color="#f5474b" loading={fetchOnProgress} />
+        {displayModal &&
+        (<Modal closeModal={this.toggleModal}>
+          <NewPost userImage={profileUrl} onSubmit={this.handleNewPostSubmit}/>
+        </Modal>)}
         <div className="dump"></div>
         <div className="wrapper">
-          <div className="newPostContainer">
+          <div className="newPostContainer" onClick={this.toggleModal}>
             <div className="header">
               <span>Create Review Post</span>
             </div>
             <div className="postInfoContainer">
               <div className="profileCover">
-                <img className="profileImage" src="./public/main.jpg" alt="" />
+                <img className="profileImage" src={profileUrl} alt="" />
               </div>
               <div className="message">
                 <span>What is the matter with your code?</span>
