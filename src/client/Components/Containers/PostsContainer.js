@@ -1,5 +1,5 @@
 import { immutable, getTagsName, getAuthorInfo, getReviewerInfo, convertDateType } from '../utils/utils';
-import { fetchPosts } from '../../action/action';
+import { fetchPosts, addNewPost } from '../../action/action';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -19,13 +19,13 @@ const mapStateToProps = (state, ownProps) => {
     postsInfo = postsInfo.filter(({ postedBy }) => postedBy === loginUser);
   }
 
-  postsInfo.forEach(({ created_at }, i) => {
-    postsInfo[i].created_at = convertDateType(created_at);
-  });
-
   if (postsInfo.length > 1) {
     postsInfo.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   }
+
+  postsInfo.forEach(({ created_at }, i) => {
+    postsInfo[i].created_at = convertDateType(created_at);
+  });
 
   const tagResult = getTagsName(postsInfo, stackTags);
   const authorResult = getAuthorInfo(tagResult, users);
@@ -44,7 +44,6 @@ const mapDispatchToProps = dispatch => {
       const userId = this.props.loginUser.id;
       const token = localStorage.getItem('token');
       const limit = amount || 10;
-      const that = this;
       const header = {
         headers: {
           Authorization: `Bearer ${token}`
@@ -66,7 +65,7 @@ const mapDispatchToProps = dispatch => {
           dispatch(fetchPosts(post));
         });
 
-        that.setState(prevState => {
+        this.setState(prevState => {
           return {
             fetchOnProgress: !prevState.fetchOnProgress
           };
@@ -83,7 +82,7 @@ const mapDispatchToProps = dispatch => {
           alert(err.message);
         }
 
-        that.setState(prevState => {
+        this.setState(prevState => {
           return {
             fetchOnProgress: !prevState.fetchOnProgress
           };
@@ -102,18 +101,33 @@ const mapDispatchToProps = dispatch => {
 
 
       try {
-        const result = await axios.post(url, data, header); //addnewpost action
-        const { updatedUser, newPost } = result.data;
-        debugger;
+        const result = await axios.post(url, data, header);
+        const { post } = result.data;
+
+        dispatch(addNewPost(post));
+
+        this.setState(prevState => {
+          return {
+            fetchOnProgress: !prevState.fetchOnProgress
+          };
+        });
+
       } catch (err) {
         const serverError = err.response;
 
         if (serverError) {
           const serverErrorMsg = serverError.data.message;
-          return alert(serverErrorMsg);
+          alert(serverErrorMsg);
+
+        } else {
+          alert(err.message);
         }
 
-        alert(err.message);
+        this.setState(prevState => {
+          return {
+            fetchOnProgress: !prevState.fetchOnProgress
+          };
+        });
       }
     }
   };

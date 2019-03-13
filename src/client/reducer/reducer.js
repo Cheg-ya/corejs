@@ -1,4 +1,4 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS, POST_CREATION_SUCCESS } from '../actionType/actionType';
 import { immutable } from '../Components/utils/utils';
 import _ from 'lodash';
 
@@ -45,7 +45,7 @@ const getUserFormat = action => {
 };
 
 const getPostFormat = action => {
-  const { id, title, description, created_at, stacks, postedBy, reviewers } = action;
+  const { id, title, description, created_at, stacks, postedBy, reviewers, code } = action;
 
   return {
     [id]: {
@@ -54,6 +54,7 @@ const getPostFormat = action => {
       title,
       description,
       created_at,
+      code,
       reviewers: _.keys(reviewers),
       stacks: _.keys(stacks)
     }
@@ -101,6 +102,20 @@ const reducer = (state = initialState, action) => { //user, post는 배열 데�
           users: addNewData(state.users, user),
           stackTags: addNewTags(state.stackTags, stacks),
           loginUser: id
+        };
+      }
+
+    case POST_CREATION_SUCCESS :
+      if (action.type === POST_CREATION_SUCCESS) {
+        const { stacks, postedBy } = action;
+
+        const post = getPostFormat(action);
+
+        return {
+          ...state,
+          posts: addNewData(state.posts, _.assign({}, post)),
+          users: addNewData(state.users, _.assign({}, postedBy)),
+          stackTags: addNewTags(state.stackTags, stacks)
         };
       }
 

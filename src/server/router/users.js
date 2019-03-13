@@ -5,6 +5,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
+const _ = require('lodash');
 
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
@@ -77,18 +78,43 @@ router.get('/:user_id/posts', verifyToken, async (req, res, next) => {
   }
 });
 
-class ServerError extends Error {
-  constructor(message) {
-    super();
-    this.status = 500;
-    this.message = message || 500;
+const getStackIds = async stackList => {
+  const stackContainer = {};
+  const stackIds = [];
+
+  stackList.forEach(name => {
+    stackContainer[name] = true;
+  });
+
+  const existStack = await Stack.find({ name: { $in: stackList } }).lean();
+
+  existStack.forEach(stack => {
+    const id = stack._id;
+    const name = stack.name;
+
+    if (stackContainer[name]) {
+      stackContainer[name] = false;
+      stackIds.push(id);
+    }
+  });
+
+  for (let name in stackContainer) {
+    if (stackContainer[name]) {
+      const newStack = new Stack({ name });
+      const result = await newStack.save();
+      const id = result.toObject()._id;
+
+      stackIds.push(id);
+    }
   }
-}
+
+  return stackIds;
+};
 
 router.post('/:user_id/posts', verifyToken, async (req, res, next) => {
-  const { title, description, isPublic, code, stacks } = req.body; // code 정보 가공해서 스키마에 맞게 넣고 프론트 action, reducer work and check
+  const { title, description, public_state, code, stacks } = req.body;
   const { email, id } = res.locals.verifiedData;
-  debugger;
+
   try {
     const author = await User.findOne({ _id: id, email }).lean();
     const authorId = author._id.toString();
@@ -98,29 +124,33 @@ router.post('/:user_id/posts', verifyToken, async (req, res, next) => {
     }
 
     if (author) {
+      const stackIds = await getStackIds(stacks);
+
       const post = new Post({
         postedBy: authorId,
-        title: 'test',
-        description: 'test',
-        public_state: true,
-        close: false,
-        code: [],
-        stacks: []
+        title,
+        description,
+        public_state,
+        code,
+        stacks: stackIds
       });
 
-      let newPost = await post.save();
-      newPost = newPost.toObject();
+      const newPost = await post.save();
+      const newPostId = newPost.toObject()._id.toString();
 
-      const postId = newPost._id.toString();
       const updateQuery = {
         '$push': {
-          'user_posts': postId
+          'user_posts': newPostId
         }
       };
 
-      const updatedUser = await User.findByIdAndUpdate(authorId, updateQuery, { new: true }).lean();
+      const populateQuery = [{ path: 'stacks' }, { path: 'postedBy' }];
 
-      return res.json({ updatedUser, newPost }); // store new post data into redux store to see updated post right after saving
+      await User.findByIdAndUpdate(authorId, updateQuery, { new: true }).populate('user_posts').lean();
+
+      const updatedPost = await Post.populate(newPost, populateQuery);
+
+      return res.json({ post: updatedPost.toObject() });
     }
 
   } catch (err) {

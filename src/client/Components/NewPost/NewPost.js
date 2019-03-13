@@ -26,6 +26,7 @@ class NewPost extends Component {
     this.createHashTag = this.createHashTag.bind(this);
     this.showNextOption = this.showNextOption.bind(this);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    this.validationCheck = this.validationCheck.bind(this);
     this.removeTargetStack = this.removeTargetStack.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
@@ -84,15 +85,15 @@ class NewPost extends Component {
   }
 
   removeEditor(e) {
+    const { code, editorIds } = this.state;
     const targetKey = parseFloat(e.currentTarget.dataset.key);
+    const codeInfo = immutable(code);
+    delete codeInfo[targetKey];
 
-    this.setState(prevState => {
-      const codeInfo = immutable(prevState.code);
-      delete codeInfo[targetKey];
+    const restIds = editorIds.filter(key => key !== targetKey);
+    const defaultEditor = [Math.random()];
 
-      const restIds = prevState.editorIds.filter(key => key !== targetKey);
-      const defaultEditor = [Math.random()];
-
+    this.setState(() => {
       return {
         editorIds: restIds.length ? restIds : defaultEditor,
         code: codeInfo
@@ -223,7 +224,7 @@ class NewPost extends Component {
 
     this.setState(prevState => {
       return {
-        stacks: prevState.stacks.filter(stack => stack !== stackName.toLowerCase())
+        stacks: prevState.stacks.filter(stack => stack !== stackName)
       };
     });
   }
@@ -232,7 +233,7 @@ class NewPost extends Component {
     const { stacks } = this.state;
 
     return stacks.map((stack, i) =>{
-      const stackName = `#${stack[0].toUpperCase() + stack.slice(1)}`;
+      const stackName = `#${stack}`;
       return (
         <button
           key={i}
@@ -251,12 +252,14 @@ class NewPost extends Component {
     const key = e.which || e.keyCode;
 
     if (key === 13) {
-      const newStack = e.target.value;
+      const stackName = e.target.value;
+      const newStack = stackName[0].toUpperCase() + stackName.slice(1).toLowerCase();
       e.target.value = '';
 
       this.setState(prevState => {
+        const isDuplicate = prevState.stacks.includes(newStack);
         return {
-          stacks: prevState.stacks.concat(newStack)
+          stacks: isDuplicate ? prevState.stacks : prevState.stacks.concat(newStack)
         };
       });
     }
@@ -290,16 +293,50 @@ class NewPost extends Component {
     });
   }
 
+  validationCheck() {
+    const { code, title, description, stacks } = this.state;
+    const validationTargets = _.assign({}, { code, title, description, stacks });
+
+    for (let key in validationTargets) {
+      const target = validationTargets[key];
+
+      if (!target instanceof Object) {
+        if (!target.length) {
+          alert(`Please type the ${target}!`);
+          return false;
+        }
+
+      } else {
+        if (!_.values(target).length) {
+          alert(`Please type the ${key}!`);
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   handleOnSubmit(e) {
     e.preventDefault();
-    
+ 
+    if (!this.validationCheck()) {
+      return;
+    }
+
     const { title, description, stacks, code, isPublic } = this.state;
+
+    const codeDataFormat = _.values(immutable(code)).map(data => {
+      delete data.id;
+      return data;
+    });
+
     const headerData = {
       title,
       description,
       stacks,
-      code,
-      isPublic
+      code: codeDataFormat,
+      public_state: isPublic
     };
 
     this.props.onSubmit(headerData);
@@ -315,7 +352,7 @@ class NewPost extends Component {
 
   render() {
     const { nextOptionShown } = this.state;
-    console.log('render\n', 'code: ',this.state.code);
+
     return (
       <div className="formWrapper">
         {!nextOptionShown ? this.firstPage() : this.secondPage()}

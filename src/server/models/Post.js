@@ -22,7 +22,8 @@ const PostSchema = new Schema({
   },
   close: {
     type: Boolean,
-    required: true
+    required: true,
+    default: false
   },
   code: [
     {

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { countReviewers } from '../utils/utils';
 import React, { Component, Fragment } from 'react';
 import PostsContainer from '../Containers/PostsContainer';
@@ -55,7 +56,8 @@ class Posts extends Component {
 
     this.setState(prevState => {
       return {
-        fetchOnProgress: !prevState.fetchOnProgress
+        fetchOnProgress: !prevState.fetchOnProgress,
+        displayModal: !prevState.displayModal
       };
     }, boundFetchFunc);
   }
@@ -63,12 +65,16 @@ class Posts extends Component {
   displayPosts() {
     const { posts } = this.props;
 
-    return posts.map((post, i) => {
-      const { postedBy, created_at, title, description, reviewers, stacks } = post;
-     const participants = countReviewers(reviewers);
+    return posts.map((post) => {
+      const { postedBy, created_at, title, description, reviewers, stacks, id } = post;
+      const participants = countReviewers(reviewers);
+      const option = {
+        pathname: "/post/review",
+        state: { id }
+      };
 
       return (
-        <div className="publicPostContainer" key={i}>
+        <div className="publicPostContainer" key={id}>
           <div className="publicPostCover">
             <div className="postBy">
               <div className="authorProfileCover">
@@ -87,7 +93,7 @@ class Posts extends Component {
             <div className="stackTags">{stacks.map(({ name })=> name).join(' ')}</div>
           </div>
           <div className="reviewBtnCover">
-            <button className="reviewStartBtn">Review Start</button>
+            <Link className="reviewStartBtn" to={option}>Review Start</Link>
           </div>
         </div>
       );

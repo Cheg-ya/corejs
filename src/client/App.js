@@ -10,16 +10,23 @@ import './app.css';
 
 class App extends Component {
   componentDidMount() {
-    const { getLoginUserId, history } = this.props;
-    const currentPath = this.props.location.pathname;
+    const { getLoginUserId, history, loginUser } = this.props;
+    // const currentPath = this.props.location.pathname;
 
-    if (currentPath !== '/') {
+    if (!loginUser.length) {
       if (!localStorage.token) {
         return history.replace('/');
       }
 
       getLoginUserId();
     }
+    // if (currentPath !== '/') {
+    //   if (!localStorage.token) {
+    //     return history.replace('/');
+    //   }
+    //   debugger;
+    //   getLoginUserId();
+    // }
   }
 
   render() {
@@ -37,15 +44,21 @@ class App extends Component {
             return null;
           }
         } />
-        <Route exact path="/review" component={Review} />
+        <Route exact path="/post/review" component={Review} />
         <Route exact path="/user/:page" render={
           props => {
             if (loginUser.length) {
-              if (props.match.params.page === "reviews") {
+              const pageName = props.match.params.page;
+
+              if (pageName === "reviews") {
                 return <Posts {...props} />
-              } else {
+              }
+              
+              if (pageName ==="account") {
                 return <Account {...props} />
               }
+
+              return <NoMatch />
             }
 
             return null;

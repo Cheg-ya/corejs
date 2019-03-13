@@ -1,4 +1,4 @@
-import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS } from '../actionType/actionType';
+import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS, POST_CREATION_SUCCESS } from '../actionType/actionType';
 
 const organizeData = dataChunk => {
   const container = {};
@@ -26,7 +26,7 @@ export const fetchBestReviewers = action => {
 };
 
 export const fetchPosts = action => {
-  const { _id, title, description, created_at, stacks, reviewers, postedBy } = action;
+  const { _id, title, description, created_at, stacks, reviewers, postedBy, code } = action;
 
   return {
     type: POST_REQUEST_SUCCESS,
@@ -34,6 +34,7 @@ export const fetchPosts = action => {
     title,
     description,
     created_at,
+    code,
     stacks: organizeData(stacks),
     reviewers: organizeData(reviewers),
     postedBy: organizeData([postedBy])
@@ -51,5 +52,21 @@ export const storeLoginUser = action => {
     github_url,
     description,
     stacks: organizeData(stacks)
+  };
+};
+
+export const addNewPost = action => {
+  const { _id, title, description, created_at, stacks, reviewers, postedBy, code } = action;
+
+  return {
+    type: POST_CREATION_SUCCESS,
+    id: _id,
+    title,
+    description,
+    created_at,
+    code,
+    stacks: organizeData(stacks),
+    reviewers: organizeData(reviewers),
+    postedBy: organizeData([postedBy])
   };
 };
