@@ -55,7 +55,7 @@ const UserSchema = new Schema({
       default: []
     }
   ],
-  private_request: [
+  private_requests: [
     {
       type: ObjectId,
       default: []

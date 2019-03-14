@@ -35,7 +35,7 @@ class Main extends Component {
 
   displayReviewers(reviewers) {
     return reviewers.map((reviewer, i) => {
-      const { name, stacks, description, github, profile_image } = reviewer;
+      const { name, stacks, description, github_url, profile_image } = reviewer;
 
       return (
         <div className="reviewerCover" key={i}>
@@ -45,7 +45,7 @@ class Main extends Component {
             <p className="reviewer description">{description}</p>
           </div>
           <div className="reviewer stacks">{stacks.map(({ name }) => name).join(' ')}</div>
-          <a className="gitLink" href={github} target="_blank" title="Click to Github">
+          <a className="gitLink" href={github_url} target="_blank" title="Click to Github">
             <img className="reviewer github" src="./public/octocat.png" />
           </a>
         </div>

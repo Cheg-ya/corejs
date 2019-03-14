@@ -1,6 +1,6 @@
 import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS, POST_CREATION_SUCCESS } from '../actionType/actionType';
 
-const organizeData = dataChunk => {
+export const organizeData = dataChunk => {
   let container = {};
 
   dataChunk.forEach(data => {
