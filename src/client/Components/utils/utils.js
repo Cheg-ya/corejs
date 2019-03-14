@@ -1,10 +1,18 @@
 export const immutable = object => {
+  if (!(object instanceof Object)) {
+    return alert('Utils: immutable\nmessage: Object required!');
+  }
+
   return JSON.parse(JSON.stringify(object));
 };
 
-export const getCommentInfo = (target, commentList) => {
+export const getCommentInfo = (target, commentList, users) => {
   if (!(target instanceof Array)) {
-    return alert('Utils: getComments\nmessage: Array required!')
+    return alert('Utils: getComments\nmessage: Array required!');
+  }
+
+  if (!(commentList instanceof Object)) {
+    return alert('Utils: getCommentInfo\nmessage: Object required!');
   }
 
   let containerWithIds = [];
@@ -15,17 +23,26 @@ export const getCommentInfo = (target, commentList) => {
 
   let containerWithName = containerWithIds.map(id => commentList[id]);
 
+  containerWithName.forEach((comment, i) => {
+    const authorInfo = getAuthorInfo([comment], users)[0].postedBy;
+    containerWithName[i].postedBy = authorInfo;
+  });
+
   target.forEach(({ comments }, i) => {
     target[i].comments = containerWithName.slice(0, comments.length);
     containerWithName = containerWithName.slice(comments.length);
   });
-  // debugger;
+
   return target;
 };
 
 export const getTagsName = (target, tagList) => {
   if (!(target instanceof Array)) {
-    return alert('Utils: getTagsName\nmessage: Array required!')
+    return alert('Utils: getTagsName\nmessage: Array required!');
+  }
+
+  if (!(tagList instanceof Object)) {
+    return alert('Utils: getTagsName\nmessage: Object required!');
   }
 
   let containerWithIds = [];
@@ -52,7 +69,11 @@ export const getTagsName = (target, tagList) => {
 
 export const getUserById = (ids, userList) => {
   if (!(ids instanceof Array)) {
-    return alert('Utils: getUserById\nmessage: Array required!')
+    return alert('Utils: getUserById\nmessage: Array required!');
+  }
+
+  if (!(userList instanceof Object)) {
+    return alert('Utils: getUserById\nmessage: Object required!');
   }
 
   const popularUserInfo = {};
@@ -68,7 +89,11 @@ export const getUserById = (ids, userList) => {
 
 export const getAuthorInfo = (target, userList) => {
   if (!(target instanceof Array)) {
-    return alert('Utils: getAuthorInfo\nmessage: Array required!')
+    return alert('Utils: getAuthorInfo\nmessage: Array required!');
+  }
+
+  if (!(userList instanceof Object)) {
+    return alert('Utils: getAuthorInfo\nmessage: Object required!');
   }
 
   target.forEach(({ postedBy }, i) => {
@@ -88,7 +113,11 @@ export const getAuthorInfo = (target, userList) => {
 
 export const getReviewerInfo = (target, userList) => {
   if (!(target instanceof Array)) {
-    return alert('Utils: getReviewerInfo\nmessage: Array required!')
+    return alert('Utils: getReviewerInfo\nmessage: Array required!');
+  }
+
+  if (!(userList instanceof Object)) {
+    return alert('Utils: getReviewerInfo\nmessage: Object required!');
   }
 
   let containerWithIds = [];
@@ -114,6 +143,10 @@ export const getReviewerInfo = (target, userList) => {
 };
 
 export const countReviewers = reviewers => {
+  if (!(reviewers instanceof Array)) {
+    return alert('Utils: countReviewers\nmessage: Array required!');
+  }
+
   if (!reviewers.length) {
     return '';
   }
@@ -129,6 +162,11 @@ export const countReviewers = reviewers => {
 };
 
 export const convertDateType = targetDate => {
+  if (!(typeof targetDate === 'string')) {
+    return alert('Utils: convertDateType\nmessage: string required!')
+  }
+
   const date = new Date(targetDate).toString().split(' ');
+
   return `${date[2]} ${date[1]} ${date[3]}`;
 };

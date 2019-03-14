@@ -15,11 +15,10 @@ const mapStateToProps = (state, ownProps) => {
       userInfo: {}
     };
   }
-  
+
   const withTagName = getTagsName([targetPost], stackTags);
   const withAuthorInfo = getAuthorInfo(withTagName, users);
-  //comments 작성자 정보넣기
-  const withComments = getCommentInfo(withTagName, comments);
+  const withComments = getCommentInfo(withAuthorInfo, comments, users);
 
   return {
     post: withComments,
