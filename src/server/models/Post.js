@@ -48,6 +48,7 @@ const PostSchema = new Schema({
   comments: [
     {
       type: ObjectId,
+      ref: 'Comment',
       default: []
     }
   ]

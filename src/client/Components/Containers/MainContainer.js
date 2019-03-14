@@ -40,7 +40,7 @@ const mapDispatchToProps = dispatch => {
           return alert(serverErrMsg)
         }
 
-        alert(err.message);
+        alert(`onMainPageMount: ${err.message}`);
       }
     },
     async storeUserInfo(header) {
@@ -65,7 +65,7 @@ const mapDispatchToProps = dispatch => {
           return alert(serverErrMsg);
         }
 
-        return alert(err.message);
+        return alert(`storeUserInfo: ${err.message}`);
       }
     }
   };

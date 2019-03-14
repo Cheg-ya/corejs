@@ -41,7 +41,7 @@ const mapDispatchToProps = dispatch => {
             return window.location = '/';
           }
 
-          alert(err.message);
+          alert(`getLoginUserId: ${err.message}`);
         }
       }
     }

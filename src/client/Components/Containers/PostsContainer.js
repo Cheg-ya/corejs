@@ -79,7 +79,7 @@ const mapDispatchToProps = dispatch => {
           alert(serverErrorMsg);
 
         } else {
-          alert(err.message);
+          alert(`onPostsComponentMount: ${err.message}`);
         }
 
         this.setState(prevState => {
@@ -120,7 +120,7 @@ const mapDispatchToProps = dispatch => {
           alert(serverErrorMsg);
 
         } else {
-          alert(err.message);
+          alert(`createNewPost: ${err.message}`);
         }
 
         this.setState(prevState => {

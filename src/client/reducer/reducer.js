@@ -7,6 +7,7 @@ const initialState = {
   posts: {},
   users: {},
   stackTags: {},
+  comments: {},
   loginUser: ''
 };
 
@@ -45,7 +46,7 @@ const getUserFormat = action => {
 };
 
 const getPostFormat = action => {
-  const { id, title, description, created_at, stacks, postedBy, reviewers, code } = action;
+  const { id, title, description, created_at, stacks, postedBy, reviewers, code, comments } = action;
 
   return {
     [id]: {
@@ -56,13 +57,28 @@ const getPostFormat = action => {
       created_at,
       code,
       reviewers: _.keys(reviewers),
-      stacks: _.keys(stacks)
+      stacks: _.keys(stacks),
+      comments: _.keys(comments)
     }
   };
 };
 
 const reducer = (state = initialState, action) => { //user, post는 배열 데이터 정보를 모두 가지고 있으므로 리듀서에서 따로 처리 해야함
   switch(action.type) {                             //하위 정보는 참조값 배열을 이미 가지고 있으므로 바로 저장
+    case LOGIN_SUCCESS :
+      if (action.type === LOGIN_SUCCESS) {
+        const { id, stacks } = action;
+
+        const user = getUserFormat(action);
+
+        return {
+          ...state,
+          users: addNewData(state.users, user),
+          stackTags: addNewTags(state.stackTags, stacks),
+          loginUser: id
+        };
+      }
+
     case BEST_REVIEWER_REQUEST_SUCCESS :
       if (action.type === BEST_REVIEWER_REQUEST_SUCCESS) {
         const { id, stacks } = action;
@@ -79,7 +95,7 @@ const reducer = (state = initialState, action) => { //user, post는 배열 데�
 
     case POST_REQUEST_SUCCESS :
       if (action.type === POST_REQUEST_SUCCESS) {
-        const { stacks, postedBy, reviewers } = action;
+        const { stacks, postedBy, reviewers, comments } = action;
 
         const post = getPostFormat(action);
 
@@ -87,21 +103,8 @@ const reducer = (state = initialState, action) => { //user, post는 배열 데�
           ...state,
           posts: addNewData(state.posts, _.assign({}, post)),
           users: addNewData(state.users, _.assign({}, postedBy, reviewers)),
+          comments: addNewData(state.comments, _.assign({}, comments)),
           stackTags: addNewTags(state.stackTags, stacks)
-        };
-      }
-
-    case LOGIN_SUCCESS :
-      if (action.type === LOGIN_SUCCESS) {
-        const { id, stacks } = action;
-
-        const user = getUserFormat(action);
-
-        return {
-          ...state,
-          users: addNewData(state.users, user),
-          stackTags: addNewTags(state.stackTags, stacks),
-          loginUser: id
         };
       }
 

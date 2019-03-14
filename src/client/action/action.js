@@ -1,10 +1,23 @@
 import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS, POST_CREATION_SUCCESS } from '../actionType/actionType';
 
 const organizeData = dataChunk => {
-  const container = {};
+  let container = {};
+
   dataChunk.forEach(data => {
     const { _id } = data;
     delete data._id;
+
+    let reply;
+
+    if (data.reply && data.reply.length) {
+      reply = organizeData(data.reply);
+      data.reply = _.keys(reply);
+    }
+
+    if (reply) {
+      container = _.assign(container, reply);
+    }
+
     container[_id] = { id: _id, ...data };
   });
 
@@ -26,7 +39,7 @@ export const fetchBestReviewers = action => {
 };
 
 export const fetchPosts = action => {
-  const { _id, title, description, created_at, stacks, reviewers, postedBy, code } = action;
+  const { _id, title, description, created_at, stacks, reviewers, postedBy, code, comments } = action;
 
   return {
     type: POST_REQUEST_SUCCESS,
@@ -37,7 +50,8 @@ export const fetchPosts = action => {
     code,
     stacks: organizeData(stacks),
     reviewers: organizeData(reviewers),
-    postedBy: organizeData([postedBy])
+    postedBy: organizeData([postedBy]),
+    comments: organizeData(comments)
   };
 };
 
@@ -56,7 +70,7 @@ export const storeLoginUser = action => {
 };
 
 export const addNewPost = action => {
-  const { _id, title, description, created_at, stacks, reviewers, postedBy, code } = action;
+  const { _id, title, description, created_at, stacks, reviewers, postedBy, code, comments } = action;
 
   return {
     type: POST_CREATION_SUCCESS,
@@ -67,6 +81,7 @@ export const addNewPost = action => {
     code,
     stacks: organizeData(stacks),
     reviewers: organizeData(reviewers),
-    postedBy: organizeData([postedBy])
+    postedBy: organizeData([postedBy]),
+    comments: organizeData(comments)
   };
 };

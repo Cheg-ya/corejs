@@ -2,7 +2,32 @@ export const immutable = object => {
   return JSON.parse(JSON.stringify(object));
 };
 
+export const getCommentInfo = (target, commentList) => {
+  if (!(target instanceof Array)) {
+    return alert('Utils: getComments\nmessage: Array required!')
+  }
+
+  let containerWithIds = [];
+
+  target.forEach(({ comments }) => {
+    containerWithIds = containerWithIds.concat(comments);
+  });
+
+  let containerWithName = containerWithIds.map(id => commentList[id]);
+
+  target.forEach(({ comments }, i) => {
+    target[i].comments = containerWithName.slice(0, comments.length);
+    containerWithName = containerWithName.slice(comments.length);
+  });
+  // debugger;
+  return target;
+};
+
 export const getTagsName = (target, tagList) => {
+  if (!(target instanceof Array)) {
+    return alert('Utils: getTagsName\nmessage: Array required!')
+  }
+
   let containerWithIds = [];
 
   target.forEach(({ stacks }) => {
@@ -26,6 +51,10 @@ export const getTagsName = (target, tagList) => {
 };
 
 export const getUserById = (ids, userList) => {
+  if (!(ids instanceof Array)) {
+    return alert('Utils: getUserById\nmessage: Array required!')
+  }
+
   const popularUserInfo = {};
 
   ids.forEach(id => {
@@ -38,6 +67,10 @@ export const getUserById = (ids, userList) => {
 };
 
 export const getAuthorInfo = (target, userList) => {
+  if (!(target instanceof Array)) {
+    return alert('Utils: getAuthorInfo\nmessage: Array required!')
+  }
+
   target.forEach(({ postedBy }, i) => {
     const author = userList[postedBy];
 
@@ -54,6 +87,10 @@ export const getAuthorInfo = (target, userList) => {
 };
 
 export const getReviewerInfo = (target, userList) => {
+  if (!(target instanceof Array)) {
+    return alert('Utils: getReviewerInfo\nmessage: Array required!')
+  }
+
   let containerWithIds = [];
 
   target.forEach(({ reviewers }) => {

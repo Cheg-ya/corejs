@@ -45,6 +45,7 @@ const UserSchema = new Schema({
   comments: [
     {
       type: ObjectId,
+      ref: 'Comment',
       default: []
     }
   ],

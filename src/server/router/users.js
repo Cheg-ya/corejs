@@ -1,31 +1,10 @@
-const secretObj = require('../../config/jwt');
+const verifyToken = require('../middleWares/middleWares').verifyToken;
 const Stack = require('../models/Stack');
 const Post = require('../models/Post');
 const User = require('../models/User');
-const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(' ')[1];
-  let decoded;
-
-  try {
-    decoded = jwt.verify(token, secretObj.secret);
-  } catch(err) {
-    return next(new ServerError('Invalid Token!'));
-  }
-
-  const { id, email } = decoded;
-
-  res.locals.verifiedData = {
-    id,
-    email
-  };
-
-  next();
-};
 
 router.get('/popular', async (req, res, next) => {
   const { limit, sort } = req.query;
