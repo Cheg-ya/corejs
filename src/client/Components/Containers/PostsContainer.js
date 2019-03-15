@@ -1,4 +1,4 @@
-import { immutable, getTagsName, getAuthorInfo, getReviewerInfo, convertDateType } from '../utils/utils';
+import { immutable, getTagsName, getAuthorInfo, getReviewerInfo, convertDateType } from '../../utils/utils';
 import { fetchPosts, addNewPost } from '../../action/action';
 import { connect } from 'react-redux';
 import axios from 'axios';

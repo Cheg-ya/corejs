@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const immutable = object => {
   if (!(object instanceof Object)) {
     return alert('Utils: immutable\nmessage: Object required!');
@@ -163,10 +165,87 @@ export const countReviewers = reviewers => {
 
 export const convertDateType = targetDate => {
   if (!(typeof targetDate === 'string')) {
-    return alert('Utils: convertDateType\nmessage: string required!')
+    return alert('Utils: convertDateType\nmessage: string required!');
   }
 
   const date = new Date(targetDate).toString().split(' ');
 
   return `${date[2]} ${date[1]} ${date[3]}`;
+};
+
+export const organizeData = dataChunk => {
+  let container = {};
+
+  dataChunk.forEach(data => {
+    const { _id } = data;
+    delete data._id;
+
+    let reply;
+
+    if (data.reply && data.reply.length) {
+      reply = organizeData(data.reply);
+      data.reply = _.keys(reply);
+    }
+
+    if (reply) {
+      container = _.assign(container, reply);
+    }
+
+    container[_id] = { id: _id, ...data };
+  });
+
+  return container;
+};
+
+
+export const addNewTags = (origin, tags) => {
+  const newTags = immutable(tags);
+  const tagIds = _.keys(newTags);
+
+  tagIds.forEach(id => {
+    if (origin[id]) {
+      delete newTags[id];
+    }
+  });
+
+  return addNewData(origin, newTags);
+};
+
+export const addNewData = (origin, target) => {
+  return {
+    ...origin,
+    ...target
+  };
+};
+
+export const getUserFormat = action => {
+  const { id, name, stacks, profile_image, github_url, description } = action;
+  return {
+    [id]: {
+      id,
+      name,
+      profile_image,
+      github_url,
+      description,
+      stacks: _.keys(stacks)
+    }
+  };
+};
+
+export const getPostFormat = action => {
+  const { id, title, description, created_at, stacks, postedBy, reviewers, code, comments } = action;
+
+  return {
+    [id]: {
+      id,
+      postedBy: _.keys(postedBy)[0],
+      title,
+      description,
+      created_at,
+      code,
+      reviewers: _.keys(reviewers),
+      stacks: _.keys(stacks),
+      comments: _.keys(comments)
+    }
+  };
 };

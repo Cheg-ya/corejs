@@ -11,7 +11,6 @@ import './app.css';
 class App extends Component {
   componentDidMount() {
     const { getLoginUserId, history, loginUser } = this.props;
-    // const currentPath = this.props.location.pathname;
 
     if (!loginUser.length) {
       if (!localStorage.token) {
@@ -20,13 +19,6 @@ class App extends Component {
 
       getLoginUserId();
     }
-    // if (currentPath !== '/') {
-    //   if (!localStorage.token) {
-    //     return history.replace('/');
-    //   }
-    //   debugger;
-    //   getLoginUserId();
-    // }
   }
 
   render() {

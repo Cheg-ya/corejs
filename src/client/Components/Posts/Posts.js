@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
-import { countReviewers } from '../utils/utils';
-import React, { Component, Fragment } from 'react';
 import PostsContainer from '../Containers/PostsContainer';
+import React, { Component, Fragment } from 'react';
+import { countReviewers } from '../../utils/utils';
+import NewPost from '../NewPost/NewPost';
+import { Link } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import Header from '../Header/Header';
 import Modal from '../Modals/Modal';
-import NewPost from '../NewPost/NewPost';
 import PropTypes from 'prop-types';
 import './Posts.css';
 

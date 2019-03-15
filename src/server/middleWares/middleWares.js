@@ -1,6 +1,6 @@
 const ServerError = require('../Error/index').ServerError;
-const secretObj = require('../../config/jwt');
 const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_AUTH || require('../../config/jwt');
 
 module.exports = {
   verifyToken(req, res, next) {
@@ -8,7 +8,7 @@ module.exports = {
     let decoded;
 
     try {
-      decoded = jwt.verify(token, secretObj.secret);
+      decoded = jwt.verify(token, secret);
     } catch(err) {
       return next(new ServerError('Invalid Token!'));
     }

@@ -46,7 +46,7 @@ class Main extends Component {
           </div>
           <div className="reviewer stacks">{stacks.map(({ name }) => name).join(' ')}</div>
           <a className="gitLink" href={github_url} target="_blank" title="Click to Github">
-            <img className="reviewer github" src="./public/octocat.png" />
+            <img className="reviewer github" src="./public/images/octocat.png" />
           </a>
         </div>
       );
@@ -105,7 +105,7 @@ class Main extends Component {
         </div>
         <div className="imageCover">
           <div className="imageBackground"></div>
-          <img className="mainImg" src="./public/main.jpg" alt="" />
+          <img className="mainImg" src="./images/main.jpg" alt="" />
           <pre className="sloganCover">
             <h1 className="slogan">Grow up with </h1><span>Core</span>
           </pre>

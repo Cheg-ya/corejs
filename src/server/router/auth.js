@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const secretObj = require('../../config/jwt');
+const secret = process.env.JWT_AUTH || require('../../config/jwt');
 
 const createToken = loginData => {
   const { email } = loginData;
@@ -12,7 +12,7 @@ const createToken = loginData => {
     id: userId,
     email
   },
-  secretObj.secret, {
+  secret, {
     algorithm: 'HS256',
     expiresIn: '3h'
   });
@@ -58,7 +58,7 @@ router.post('/check', async (req, res, next) => {
   const { token } = req.body;
 
   try {
-    const decoded = jwt.verify(token, secretObj.secret);
+    const decoded = jwt.verify(token, secret);
     const { email, id } = decoded;
     const user = await User.findOne({ email, _id: id }).lean();
 

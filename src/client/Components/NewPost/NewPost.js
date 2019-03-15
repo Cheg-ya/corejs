@@ -1,7 +1,7 @@
+import stack_image from '../../../../public/images/stack_image.png';
 import MonacoEditor from 'react-monaco-editor';
-import { immutable } from '../utils/utils';
+import { immutable } from '../../utils/utils';
 import React, { Component } from 'react';
-import stack_image from '../../../../public/stack_image.png';
 import _ from 'lodash';
 import './NewPost.css';
 

@@ -1,28 +1,5 @@
 import { BEST_REVIEWER_REQUEST_SUCCESS, POST_REQUEST_SUCCESS, LOGIN_SUCCESS, POST_CREATION_SUCCESS } from '../actionType/actionType';
-
-export const organizeData = dataChunk => {
-  let container = {};
-
-  dataChunk.forEach(data => {
-    const { _id } = data;
-    delete data._id;
-
-    let reply;
-
-    if (data.reply && data.reply.length) {
-      reply = organizeData(data.reply);
-      data.reply = _.keys(reply);
-    }
-
-    if (reply) {
-      container = _.assign(container, reply);
-    }
-
-    container[_id] = { id: _id, ...data };
-  });
-
-  return container;
-};
+import { organizeData } from '../utils/utils';
 
 export const fetchBestReviewers = action => {
   const { name, profile_image, github_url, description, stacks, _id } = action;

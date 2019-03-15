@@ -1,4 +1,4 @@
-import { immutable, getTagsName, getUserById } from '../utils/utils';
+import { immutable, getTagsName, getUserById } from '../../utils/utils';
 import { fetchBestReviewers, storeLoginUser } from '../../action/action';
 import { connect } from 'react-redux';
 import axios from 'axios';
