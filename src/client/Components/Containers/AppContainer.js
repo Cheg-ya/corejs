@@ -1,6 +1,6 @@
 import { storeLoginUser } from '../../action/action';
 import { connect } from 'react-redux';
-import config from '../../../config/firebase';
+import config from '../../firebase';
 import firebase from 'firebase';
 import axios from 'axios';
 

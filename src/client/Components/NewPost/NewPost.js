@@ -1,4 +1,3 @@
-import stack_image from '../../../../public/images/stack_image.png';
 import MonacoEditor from 'react-monaco-editor';
 import { immutable } from '../../utils/utils';
 import React, { Component } from 'react';
@@ -176,7 +175,7 @@ class NewPost extends Component {
               <div className="stackCover">
                 <div className="stackInputField">
                   <div className="stackImageCover">
-                    <img className="stackImage" src={stack_image} alt="" />
+                    <img className="stackImage" src="./public/images/stack_image.png" alt="" />
                   </div>
                   <div className="stackInputCover">
                     <input className="stackInput" type="text" onKeyPress={this.addStackList} placeholder="Type stack info" />

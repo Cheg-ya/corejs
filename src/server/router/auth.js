@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const secret = process.env.JWT_AUTH || require('../../config/jwt');
+const secret = process.env.AUTH || require('../../config/jwt.js');
 
 const createToken = loginData => {
   const { email } = loginData;

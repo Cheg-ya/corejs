@@ -1,10 +1,6 @@
-import { storeLoginUser } from '../../action/action';
-import { Link, Redirect } from 'react-router-dom';
-import config from '../../../config/firebase';
+import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import firebase from 'firebase';
-import axios from 'axios';
 import './Header.css';
 
 class Header extends Component {

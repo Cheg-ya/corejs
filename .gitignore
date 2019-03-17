@@ -4,3 +4,7 @@ dist
 *.log
 yarn.lock
 src/config
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

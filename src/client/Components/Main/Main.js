@@ -1,5 +1,5 @@
 import MainContainer from '../Containers/MainContainer';
-import config from '../../../config/firebase';
+import config from '../../firebase';
 import React, { Component } from 'react';
 import Modal from '../Modals/Modal';
 import Login from '../Login/Login';
@@ -105,7 +105,7 @@ class Main extends Component {
         </div>
         <div className="imageCover">
           <div className="imageBackground"></div>
-          <img className="mainImg" src="./images/main.jpg" alt="" />
+          <img className="mainImg" src="./public/images/main.jpg" alt="" />
           <pre className="sloganCover">
             <h1 className="slogan">Grow up with </h1><span>Core</span>
           </pre>

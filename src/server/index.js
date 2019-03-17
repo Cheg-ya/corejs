@@ -14,7 +14,6 @@ db.once('open', err => {
 });
 
 db.on('error', err => {
-  console.log(mongoUrl);
   console.error(`Mongoose default connection error: ${err}`);
 });
 
