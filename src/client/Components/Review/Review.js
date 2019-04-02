@@ -2,6 +2,7 @@ import { anOldHope } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import ReviewContainer from '../Containers/ReviewContainer';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import React, { Component } from 'react';
+import Comment from '../Comment/Comment';
 import Header from '../Header/Header';
 import './Review.css';
 
@@ -11,11 +12,11 @@ class Review extends Component {
 
     this.state = {
       fetchOnProgress: false,
-      displayModal: false,
-      hover: false
+      displayModal: false
     };
 
     this.displayCode = this.displayCode.bind(this);
+    this.getLineNumber = this.getLineNumber.bind(this);
   }
 
   componentDidMount() {
@@ -25,17 +26,22 @@ class Review extends Component {
     if (!post.length) {
       this.setState(prevState => {
         return {
-          fetchOnProgress: !prevState.fetchOnProgress,
-          displayModal: !prevState.displayModal
+          fetchOnProgress: !prevState.fetchOnProgress
         };
       }, boundFetchFunc);
     }
   }
 
   getLineNumber(lineNum) {
+    const that = this;
+
     return {
-      onClick() { // display review modal when clicking
-        alert(lineNum)
+      onClick() {
+        that.setState(prevState => {
+          return {
+            displayModal: !prevState.displayModal
+          };
+        });
       },
       onMouseEnter(e) {
         e.currentTarget.style.border = '1px solid gray';
@@ -74,11 +80,14 @@ class Review extends Component {
 
   render() {
     const targetPost = this.props.post[0];
+    const { userInfo } = this.props;
+    const { displayModal } = this.state;
 
     return (
       <div className="reviewWrapper">
         <Header history={this.props.history} />
         <div className="space"></div>
+        {displayModal && <Comment user={userInfo} />}
         {targetPost && this.displayCode()}
       </div>
     );
