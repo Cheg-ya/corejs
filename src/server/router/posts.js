@@ -1,7 +1,7 @@
 const verifyToken = require('../middleWares/middleWares').verifyToken;
 const ServerError = require('../Error/index').ServerError;
-const Comment = require('../models/Comment');
-const Post = require('../models/Post');
+const Comment = require('../Models/Comment');
+const Post = require('../Models/Post');
 const express = require('express');
 const router = express.Router();
 

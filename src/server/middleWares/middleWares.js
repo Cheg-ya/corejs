@@ -1,6 +1,6 @@
 const ServerError = require('../Error/index').ServerError;
 const jwt = require('jsonwebtoken');
-const secret = process.env.AUTH || require('../../config/jwt.js');
+const secret = process.env.AUTH || require('../../config/credential').jwtSecret;;
 
 module.exports = {
   verifyToken(req, res, next) {
