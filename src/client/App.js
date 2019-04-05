@@ -1,7 +1,6 @@
 import { Route, Switch } from 'react-router-dom';
 import React, { Component } from 'react';
 import AppContainer from './Components/Containers/AppContainer';
-import NoMatch from './Components/NoMatch/NoMatch';
 import Account from './Components/Account/Account';
 import Review from './Components/Review/Review';
 import Posts from './Components/Posts/Posts';
@@ -56,7 +55,7 @@ class App extends Component {
             return null;
           }
         } />
-        <Route component={NoMatch} />
+        <Route component={Main} />
       </Switch>
     );
   }
