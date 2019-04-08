@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
 
   app.get('/*', (req, res, next) => {
     if (!req.path.includes('api')) {
-      return res.sendFile('index.html', { root: './dist/' });
+      return res.sendFile('index.html', { root: './ondeck/dist/' });
     }
 
     next();
