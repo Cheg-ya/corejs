@@ -54,6 +54,7 @@ http://www.jscore.live or http://jscore.live
 - 자바스크립트 테스트 프레임워크 Jest를 활용한 Unit Test
 >### Deployment
 - AWS Elastic Beanstalk 서비스를 이용해 배포
+- CircleCI 서비스를 이용한 지속적인 배포 및 관리
 
 >### Management Tool
 - MockUp을 이용해 기획 단계 UX & UI 설계
@@ -65,8 +66,8 @@ http://www.jscore.live or http://jscore.live
 - Database Schema 변경으로 인한 Client-Side의 전반적인 코드 수정 작업 발생
 - 배포 환경에 대한 이해 부족으로 인한 페이지 새로고침 대응 문제
 - 배포 단계에서 발생한 Static File Path 설정 문제
-
 ---
+
 >## Need to be done
 - Component Unit Test
 - Server-Side Code Refactoring & File Directory Re-structuring
