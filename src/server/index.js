@@ -6,14 +6,14 @@ const DB = require('./database');
 
 const app = express();
 
-require('./middleWares/index.js')(app);
+require('./middleWares/index')(app);
 
 if (process.env.NODE_ENV === 'production') {
   console.log('Production');
 
   app.get('/*', (req, res, next) => {
     if (!req.path.includes('api')) {
-      return res.sendFile('index.html', { root: './ondeck/dist/' });
+      return res.sendFile('index.html', { root: './dist/' });
     }
 
     next();

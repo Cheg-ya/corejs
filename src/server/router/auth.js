@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../Models/User');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const secret = process.env.AUTH || require('../../config/credential').jwtSecret;
 
