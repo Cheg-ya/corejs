@@ -6,10 +6,15 @@ class Login extends Component {
     super(props);
 
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleOnClose = this.handleOnClose.bind(this);
   }
 
   handleLogin() {
     this.props.login();
+  }
+  
+  handleOnClose() {
+    this.props.closeModal();
   }
 
   render() {
@@ -17,7 +22,7 @@ class Login extends Component {
       <div className="loginForm">
         <div className="formLogo">Core</div>
         <button className="githubBtn" onClick={this.handleLogin}>Github Sign In</button>
-        <i className="closeBtn fas fa-times-circle"></i>
+        <i className="closeBtn fas fa-times-circle" onClick={this.handleOnClose}></i>
       </div>
     );
   }

@@ -48,8 +48,6 @@ class App extends Component {
               if (pageName ==="account") {
                 return <Account {...props} />
               }
-
-              return <NoMatch />
             }
 
             return null;

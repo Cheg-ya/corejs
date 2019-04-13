@@ -22,6 +22,16 @@ class Posts extends Component {
     this.handleNewPostSubmit = this.handleNewPostSubmit.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const isRequestSuccess = this.state.fetchOnProgress && !nextState.fetchOnProgress;
+
+    if (!this.state.fetchOnProgress) {
+      return true;
+    }
+
+    return isRequestSuccess;
+  }
+
   componentWillReceiveProps(nextProps) {
     const { fetchOnProgress } = this.state;
     const prevParams = this.props.match.params;

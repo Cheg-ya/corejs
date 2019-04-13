@@ -19,6 +19,16 @@ class Review extends Component {
     this.getLineNumber = this.getLineNumber.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const isRequestSuccess = this.state.fetchOnProgress && !nextState.fetchOnProgress;
+
+    if (!this.state.fetchOnProgress) {
+      return true;
+    }
+
+    return isRequestSuccess;
+  }
+
   componentDidMount() {
     const { onReviewDidMount, post } = this.props;
     const boundFetchFunc = onReviewDidMount.bind(this);

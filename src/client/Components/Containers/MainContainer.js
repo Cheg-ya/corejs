@@ -32,15 +32,28 @@ const mapDispatchToProps = dispatch => {
           dispatch(fetchBestReviewers(reviewer));
         });
 
+        this.setState(() => {
+          return {
+            fetchOnProgress: false
+          };
+        });
+
       } catch(err) {
         const serverError = err.response;
 
         if (serverError) {
           const serverErrMsg = serverError.data.message;
-          return alert(serverErrMsg)
+          alert(serverErrMsg);
+
+        } else {
+          alert(`onMainPageMount: ${err.message}`);
         }
 
-        alert(`onMainPageMount: ${err.message}`);
+        this.setState(() => {
+          return {
+            fetchOnProgress: false
+          };
+        });
       }
     },
     async storeUserInfo(header) {

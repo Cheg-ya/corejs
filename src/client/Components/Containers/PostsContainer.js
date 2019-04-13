@@ -65,9 +65,9 @@ const mapDispatchToProps = dispatch => {
           dispatch(fetchPosts(post));
         });
 
-        this.setState(prevState => {
+        this.setState(() => {
           return {
-            fetchOnProgress: !prevState.fetchOnProgress
+            fetchOnProgress: false
           };
         });
 
@@ -82,9 +82,9 @@ const mapDispatchToProps = dispatch => {
           alert(`onPostsComponentMount: ${err.message}`);
         }
 
-        this.setState(prevState => {
+        this.setState(() => {
           return {
-            fetchOnProgress: !prevState.fetchOnProgress
+            fetchOnProgress: false
           };
         });
       }

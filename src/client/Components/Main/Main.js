@@ -1,8 +1,8 @@
 import MainContainer from '../Containers/MainContainer';
-import config from '../../firebase';
 import React, { Component } from 'react';
 import Modal from '../Modals/Modal';
 import Login from '../Login/Login';
+import config from '../../config';
 import firebase from 'firebase';
 import './Main.css';
 
@@ -11,7 +11,8 @@ class Main extends Component {
     super(props);
     
     this.state = {
-      displayLoginModal:false
+      displayLoginModal:false,
+      fetchOnProgress: false
     };
 
     this.githubLogin = this.githubLogin.bind(this);
@@ -20,8 +21,19 @@ class Main extends Component {
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const isRequestSuccess = this.state.fetchOnProgress && !nextState.fetchOnProgress;
+
+    if (!this.state.fetchOnProgress) {
+      return true;
+    }
+
+    return isRequestSuccess;
+  }
+
   componentDidMount() {
     const { reviewers, onMainPageMount, history } = this.props;
+    const boundOnMainPageMount = onMainPageMount.bind(this);
     const loggedIn = localStorage.getItem('token');
 
     if (loggedIn) {
@@ -29,7 +41,11 @@ class Main extends Component {
     }
 
     if (!reviewers.length) {
-      onMainPageMount()
+      this.setState(() => {
+        return {
+          fetchOnProgress: true
+        };
+      }, boundOnMainPageMount);
     }
   }
 
@@ -61,12 +77,14 @@ class Main extends Component {
     });
   }
 
-  githubLogin() {
+  async githubLogin() {
     firebase.initializeApp(config);
 
     const provider = new firebase.auth.GithubAuthProvider();
 
-    firebase.auth().signInWithPopup(provider).then(result => {
+    try {
+      const result = await firebase.auth().signInWithPopup(provider);
+
       const { email } = result.user;
       const { username } = result.additionalUserInfo;
       const { avatar_url, html_url, id} = result.additionalUserInfo.profile;
@@ -77,17 +95,12 @@ class Main extends Component {
         html_url,
         github_id: id
       };
-  
+    
       this.props.storeUserInfo.call(this, header);
 
-    }).catch(error => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error.email;
-      const credential = error.credential;
-      
-      return alert(errorMessage);
-    });
+    } catch(error) {
+      return alert(error.message);
+    };
   }
 
   pageRefresher() {
@@ -119,7 +132,7 @@ class Main extends Component {
         </div>
         {displayLoginModal &&
         (<Modal closeModal={this.toggleSignInModal}>
-          <Login login={this.githubLogin} />
+          <Login login={this.githubLogin} closeModal={this.toggleSignInModal} />
         </Modal>)}
       </div>
     );
