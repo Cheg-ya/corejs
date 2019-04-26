@@ -4,6 +4,7 @@
 
 .reviewWrapper {
   background-color: #e9ebee;
+  min-height: 100vh;
 }
 
 .codeBoxWrapper {

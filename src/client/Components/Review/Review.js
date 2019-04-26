@@ -102,6 +102,6 @@ class Review extends Component {
       </div>
     );
   }
-}
+} 
 
 export default ReviewContainer(Review);

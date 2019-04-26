@@ -99,7 +99,6 @@ const mapDispatchToProps = dispatch => {
         }
       };
 
-
       try {
         const result = await axios.post(url, data, header);
         const { post } = result.data;

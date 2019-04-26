@@ -37,6 +37,10 @@ class Posts extends Component {
     const prevParams = this.props.match.params;
     const nextParams = nextProps.match.params;
 
+    if (prevParams.page === 'reviews') {
+      return;
+    }
+
     if (!_.isEqual(prevParams, nextParams) && !fetchOnProgress) {
       const { onPostsComponentMount } = this.props;
       const boundFetchFunc = onPostsComponentMount.bind(this);

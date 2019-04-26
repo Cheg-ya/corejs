@@ -22,6 +22,11 @@ jobs:
           command: |
             sudo npm install
       - run:
+          # TEST
+          name: Test Before Build
+          command: |
+            sudo npm test
+      - run:
           name: build
           command: |
             sudo npm run build
